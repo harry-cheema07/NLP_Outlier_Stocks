@@ -75,9 +75,15 @@ fig.show()
 
 #Collecting News related to Outliers
 news = gd.getOutlierNews(outliers['Ticker'])
+rows=[]
+#initiating Dataframe to store news links
+news_df = pd.DataFrame(columns=['Stock','News'])
 
 for key, value in news.items(): 
-    print('Stock : '+ key)
-    for dict in value:
-        for key,value in dict.items():
-            print(key)
+    for my_dict in value:
+        for k,value in my_dict.items():
+            if isinstance(value, dict):
+                rows.append({'Stock':key,'News':value['canonicalUrl']['url']})
+
+news_df = pd.concat([news_df, pd.DataFrame(rows)], ignore_index=True)         
+print(news_df)
